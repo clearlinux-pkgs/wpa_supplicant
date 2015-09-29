@@ -4,7 +4,7 @@
 #
 Name     : wpa_supplicant
 Version  : 2.4
-Release  : 4
+Release  : 5
 URL      : http://w1.fi/releases/wpa_supplicant-2.4.tar.gz
 Source0  : http://w1.fi/releases/wpa_supplicant-2.4.tar.gz
 Summary  : No detailed summary available
