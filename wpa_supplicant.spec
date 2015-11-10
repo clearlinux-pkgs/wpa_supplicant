@@ -4,7 +4,7 @@
 #
 Name     : wpa_supplicant
 Version  : 2.4
-Release  : 5
+Release  : 6
 URL      : http://w1.fi/releases/wpa_supplicant-2.4.tar.gz
 Source0  : http://w1.fi/releases/wpa_supplicant-2.4.tar.gz
 Summary  : No detailed summary available
@@ -23,6 +23,7 @@ Patch6: CVE-2015-4144.patch
 Patch7: CVE-2015-4145.patch
 Patch8: CVE-2015-4146.patch
 Patch9: CVE-2015-4146-2.patch
+Patch10: CVE-2015-8041.patch
 
 %description
 wpa_supplicant and hostapd
@@ -59,6 +60,7 @@ config components for the wpa_supplicant package.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
+%patch10 -p1
 
 %build
 pushd wpa_supplicant
