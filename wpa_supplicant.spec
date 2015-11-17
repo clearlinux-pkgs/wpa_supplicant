@@ -4,7 +4,7 @@
 #
 Name     : wpa_supplicant
 Version  : 2.4
-Release  : 6
+Release  : 7
 URL      : http://w1.fi/releases/wpa_supplicant-2.4.tar.gz
 Source0  : http://w1.fi/releases/wpa_supplicant-2.4.tar.gz
 Summary  : No detailed summary available
@@ -71,6 +71,9 @@ rm -rf %{buildroot}
 pushd wpa_supplicant
 %make_install
 popd
+## make_install_append content
+chmod -x %{buildroot}/usr/lib/systemd/system/*
+## make_install_append end
 
 %files
 %defattr(-,root,root,-)
