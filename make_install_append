@@ -1,0 +1,1 @@
+chmod -x %{buildroot}/usr/lib/systemd/system/*
