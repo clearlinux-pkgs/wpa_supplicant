@@ -504,26 +504,28 @@ Index: wpa_supplicant-2.4/wpa_supplicant/Makefile
 ===================================================================
 --- wpa_supplicant-2.4.orig/wpa_supplicant/Makefile
 +++ wpa_supplicant-2.4/wpa_supplicant/Makefile
-@@ -6,8 +6,8 @@ ifndef CFLAGS
+@@ -6,9 +6,9 @@ ifndef CFLAGS
  CFLAGS = -MMD -O2 -Wall -g
  endif
  
 -export LIBDIR ?= /usr/local/lib/
+-export INCDIR ?= /usr/local/include/
 -export BINDIR ?= /usr/local/sbin/
 +export LIBDIR ?= /usr/lib64/
++export INCDIR ?= /usr/include/
 +export BINDIR ?= /usr/bin/
  PKG_CONFIG ?= pkg-config
  
  CFLAGS += $(EXTRA_CFLAGS)
-@@ -58,9 +58,10 @@ mkconfig:
- 
- $(DESTDIR)$(BINDIR)/%: %
- 	install -D $(<) $(@)
--
- install: $(addprefix $(DESTDIR)$(BINDIR)/,$(BINALL))
- 	$(MAKE) -C ../src install
+--- wpa_supplicant-2.5/wpa_supplicant/Makefile~	2015-09-27 19:02:05.000000000 +0000
++++ wpa_supplicant-2.5/wpa_supplicant/Makefile	2016-04-12 17:21:24.938435231 +0000
+@@ -69,6 +69,9 @@
+ 	install -m 0644 -D libwpa_client.so $(DESTDIR)/$(LIBDIR)/libwpa_client.so
+ 	install -m 0644 -D ../src/common/wpa_ctrl.h $(DESTDIR)/$(INCDIR)/wpa_ctrl.h
+ endif
 +	install -d $(DESTDIR)/usr/lib/systemd/system
 +	install -t $(DESTDIR)/usr/lib/systemd/system systemd/*.service
++
  
  ifdef CONFIG_FIPS
  CONFIG_NO_RANDOM_POOL=
