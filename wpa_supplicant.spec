@@ -4,7 +4,7 @@
 #
 Name     : wpa_supplicant
 Version  : 2.5
-Release  : 8
+Release  : 9
 URL      : http://w1.fi/releases/wpa_supplicant-2.5.tar.gz
 Source0  : http://w1.fi/releases/wpa_supplicant-2.5.tar.gz
 Summary  : No detailed summary available
