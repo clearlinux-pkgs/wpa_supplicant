@@ -4,14 +4,17 @@
 #
 Name     : wpa_supplicant
 Version  : 2.6
-Release  : 14
+Release  : 15
 URL      : http://w1.fi/releases/wpa_supplicant-2.6.tar.gz
 Source0  : http://w1.fi/releases/wpa_supplicant-2.6.tar.gz
+Source1  : wpa_supplicant.service
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0
 Requires: wpa_supplicant-bin
 Requires: wpa_supplicant-config
+Requires: wpa_supplicant-data
+BuildRequires : dbus-dev
 BuildRequires : libnl-dev
 BuildRequires : openssl-dev
 Patch1: config.patch
@@ -26,6 +29,7 @@ advertisement clause removed).
 %package bin
 Summary: bin components for the wpa_supplicant package.
 Group: Binaries
+Requires: wpa_supplicant-data
 Requires: wpa_supplicant-config
 
 %description bin
@@ -38,6 +42,14 @@ Group: Default
 
 %description config
 config components for the wpa_supplicant package.
+
+
+%package data
+Summary: data components for the wpa_supplicant package.
+Group: Data
+
+%description data
+data components for the wpa_supplicant package.
 
 
 %prep
@@ -55,8 +67,15 @@ rm -rf %{buildroot}
 pushd wpa_supplicant
 %make_install
 popd
+mkdir -p %{buildroot}/usr/lib/systemd/system
+install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/wpa_supplicant.service
 ## make_install_append content
 chmod -x %{buildroot}/usr/lib/systemd/system/*
+mkdir -p %{buildroot}/usr/share/dbus-1/system-services/
+install -m 0644 wpa_supplicant/dbus/fi.w1.wpa_supplicant1.service %{buildroot}/usr/share/dbus-1/system-services/
+install -m 0644 wpa_supplicant/dbus/fi.epitest.hostap.WPASupplicant.service %{buildroot}/usr/share/dbus-1/system-services/
+mkdir -p %{buildroot}/usr/share/dbus-1/system.d/
+install -m 0644 wpa_supplicant/dbus/dbus-wpa_supplicant.conf %{buildroot}/usr/share/dbus-1/system.d/wpa_supplicant.conf
 ## make_install_append end
 
 %files
@@ -74,3 +93,9 @@ chmod -x %{buildroot}/usr/lib/systemd/system/*
 /usr/lib/systemd/system/wpa_supplicant-wired@.service
 /usr/lib/systemd/system/wpa_supplicant.service
 /usr/lib/systemd/system/wpa_supplicant@.service
+
+%files data
+%defattr(-,root,root,-)
+/usr/share/dbus-1/system-services/fi.epitest.hostap.WPASupplicant.service
+/usr/share/dbus-1/system-services/fi.w1.wpa_supplicant1.service
+/usr/share/dbus-1/system.d/wpa_supplicant.conf
