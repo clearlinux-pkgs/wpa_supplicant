@@ -31,7 +31,7 @@ Index: wpa_supplicant-2.4/wpa_supplicant/.config
 +# replacement for WEXT and its use allows wpa_supplicant to properly control
 +# the driver to improve existing functionality like roaming and to support new
 +# functionality.
-+CONFIG_DRIVER_WEXT=y
++# CONFIG_DRIVER_WEXT is not set
 +
 +# Driver interface for Linux drivers using the nl80211 kernel interface
 +CONFIG_DRIVER_NL80211=y
@@ -108,7 +108,7 @@ Index: wpa_supplicant-2.4/wpa_supplicant/.config
 +# Note: If OpenSSL is used as the TLS library, OpenSSL 1.0 or newer is needed
 +# for EAP-FAST support. Older OpenSSL releases would need to be patched, e.g.,
 +# with openssl-0.9.8x-tls-extensions.patch, to add the needed functions.
-+#CONFIG_EAP_FAST=y
++CONFIG_EAP_FAST=y
 +
 +# EAP-GTC
 +CONFIG_EAP_GTC=y
