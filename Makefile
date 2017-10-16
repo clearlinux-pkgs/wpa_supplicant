@@ -1,5 +1,5 @@
 PKG_NAME := wpa_supplicant
-URL := http://w1.fi/releases/wpa_supplicant-2.6.tar.gz
+URL := https://w1.fi/cgit/hostap/snapshot/b488a12948751f57871f09baa345e59b23959a41.tar.gz
 
 
 include ../common/Makefile.common
