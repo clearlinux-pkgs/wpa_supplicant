@@ -6,7 +6,7 @@
 #
 Name     : wpa_supplicant
 Version  : 2.6
-Release  : 19
+Release  : 21
 URL      : http://w1.fi/releases/wpa_supplicant-2.6.tar.gz
 Source0  : http://w1.fi/releases/wpa_supplicant-2.6.tar.gz
 Source1  : wpa_supplicant.service
@@ -21,6 +21,14 @@ BuildRequires : dbus-dev
 BuildRequires : libnl-dev
 BuildRequires : openssl-dev
 Patch1: config.patch
+Patch2: rebased-v2.6-0001-hostapd-Avoid-key-reinstallation-in-FT-handshake.patch
+Patch3: rebased-v2.6-0002-Prevent-reinstallation-of-an-already-in-use-group-ke.patch
+Patch4: rebased-v2.6-0003-Extend-protection-of-GTK-IGTK-reinstallation-of-WNM-.patch
+Patch5: rebased-v2.6-0004-Prevent-installation-of-an-all-zero-TK.patch
+Patch6: rebased-v2.6-0005-Fix-PTK-rekeying-to-generate-a-new-ANonce.patch
+Patch7: rebased-v2.6-0006-TDLS-Reject-TPK-TK-reconfiguration.patch
+Patch8: rebased-v2.6-0007-WNM-Ignore-WNM-Sleep-Mode-Response-without-pending-r.patch
+Patch9: rebased-v2.6-0008-FT-Do-not-allow-multiple-Reassociation-Response-fram.patch
 
 %description
 wpa_supplicant and hostapd
@@ -58,19 +66,27 @@ data components for the wpa_supplicant package.
 %prep
 %setup -q -n wpa_supplicant-2.6
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
+%patch6 -p1
+%patch7 -p1
+%patch8 -p1
+%patch9 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1495738306
+export SOURCE_DATE_EPOCH=1508173323
 pushd wpa_supplicant
 make V=1  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1495738306
+export SOURCE_DATE_EPOCH=1508173323
 rm -rf %{buildroot}
 pushd wpa_supplicant
 %make_install
