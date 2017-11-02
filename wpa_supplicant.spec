@@ -6,7 +6,7 @@
 #
 Name     : wpa_supplicant
 Version  : 2.6
-Release  : 21
+Release  : 22
 URL      : http://w1.fi/releases/wpa_supplicant-2.6.tar.gz
 Source0  : http://w1.fi/releases/wpa_supplicant-2.6.tar.gz
 Source1  : wpa_supplicant.service
@@ -29,6 +29,16 @@ Patch6: rebased-v2.6-0005-Fix-PTK-rekeying-to-generate-a-new-ANonce.patch
 Patch7: rebased-v2.6-0006-TDLS-Reject-TPK-TK-reconfiguration.patch
 Patch8: rebased-v2.6-0007-WNM-Ignore-WNM-Sleep-Mode-Response-without-pending-r.patch
 Patch9: rebased-v2.6-0008-FT-Do-not-allow-multiple-Reassociation-Response-fram.patch
+Patch10: CVE-2017-13077.nopatch
+Patch11: CVE-2017-13078.nopatch
+Patch12: CVE-2017-13079.nopatch
+Patch13: CVE-2017-13080.nopatch
+Patch14: CVE-2017-13081.nopatch
+Patch15: CVE-2017-13082.nopatch
+Patch16: CVE-2017-13084.nopatch
+Patch17: CVE-2017-13086.nopatch
+Patch18: CVE-2017-13087.nopatch
+Patch19: CVE-2017-13088.nopatch
 
 %description
 wpa_supplicant and hostapd
@@ -80,13 +90,17 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1508173323
+export SOURCE_DATE_EPOCH=1509638702
+export CFLAGS="$CFLAGS -fstack-protector-strong "
+export FCFLAGS="$CFLAGS -fstack-protector-strong "
+export FFLAGS="$CFLAGS -fstack-protector-strong "
+export CXXFLAGS="$CXXFLAGS -fstack-protector-strong "
 pushd wpa_supplicant
 make V=1  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1508173323
+export SOURCE_DATE_EPOCH=1509638702
 rm -rf %{buildroot}
 pushd wpa_supplicant
 %make_install
