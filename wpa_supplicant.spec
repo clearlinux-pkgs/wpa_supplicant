@@ -6,7 +6,7 @@
 #
 Name     : wpa_supplicant
 Version  : 2.6
-Release  : 22
+Release  : 23
 URL      : http://w1.fi/releases/wpa_supplicant-2.6.tar.gz
 Source0  : http://w1.fi/releases/wpa_supplicant-2.6.tar.gz
 Source1  : wpa_supplicant.service
@@ -17,6 +17,7 @@ License  : GPL-2.0
 Requires: wpa_supplicant-bin
 Requires: wpa_supplicant-config
 Requires: wpa_supplicant-data
+Requires: linux-firmware-wifi
 BuildRequires : dbus-dev
 BuildRequires : libnl-dev
 BuildRequires : openssl-dev
@@ -90,17 +91,17 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1509638702
+export SOURCE_DATE_EPOCH=1516985745
 export CFLAGS="$CFLAGS -fstack-protector-strong "
 export FCFLAGS="$CFLAGS -fstack-protector-strong "
 export FFLAGS="$CFLAGS -fstack-protector-strong "
 export CXXFLAGS="$CXXFLAGS -fstack-protector-strong "
 pushd wpa_supplicant
-make V=1  %{?_smp_mflags}
+make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1509638702
+export SOURCE_DATE_EPOCH=1516985745
 rm -rf %{buildroot}
 pushd wpa_supplicant
 %make_install
