@@ -6,7 +6,7 @@
 #
 Name     : wpa_supplicant
 Version  : 2.6
-Release  : 24
+Release  : 25
 URL      : http://w1.fi/releases/wpa_supplicant-2.6.tar.gz
 Source0  : http://w1.fi/releases/wpa_supplicant-2.6.tar.gz
 Source1  : wpa_supplicant.service
