@@ -6,18 +6,20 @@
 #
 Name     : wpa_supplicant
 Version  : 2.6
-Release  : 25
+Release  : 26
 URL      : http://w1.fi/releases/wpa_supplicant-2.6.tar.gz
 Source0  : http://w1.fi/releases/wpa_supplicant-2.6.tar.gz
 Source1  : wpa_supplicant.service
 Source99 : http://w1.fi/releases/wpa_supplicant-2.6.tar.gz.asc
 Summary  : No detailed summary available
 Group    : Development/Tools
-License  : GPL-2.0
-Requires: wpa_supplicant-bin
-Requires: wpa_supplicant-config
-Requires: wpa_supplicant-data
+License  : BSD-3-Clause
+Requires: wpa_supplicant-bin = %{version}-%{release}
+Requires: wpa_supplicant-config = %{version}-%{release}
+Requires: wpa_supplicant-data = %{version}-%{release}
+Requires: wpa_supplicant-license = %{version}-%{release}
 Requires: linux-firmware-wifi
+BuildRequires : buildreq-qmake
 BuildRequires : dbus-dev
 BuildRequires : libnl-dev
 BuildRequires : openssl-dev
@@ -40,6 +42,7 @@ Patch16: CVE-2017-13084.nopatch
 Patch17: CVE-2017-13086.nopatch
 Patch18: CVE-2017-13087.nopatch
 Patch19: CVE-2017-13088.nopatch
+Patch20: CVE-2018-14526.patch
 
 %description
 wpa_supplicant and hostapd
@@ -51,8 +54,9 @@ advertisement clause removed).
 %package bin
 Summary: bin components for the wpa_supplicant package.
 Group: Binaries
-Requires: wpa_supplicant-data
-Requires: wpa_supplicant-config
+Requires: wpa_supplicant-data = %{version}-%{release}
+Requires: wpa_supplicant-config = %{version}-%{release}
+Requires: wpa_supplicant-license = %{version}-%{release}
 
 %description bin
 bin components for the wpa_supplicant package.
@@ -74,6 +78,14 @@ Group: Data
 data components for the wpa_supplicant package.
 
 
+%package license
+Summary: license components for the wpa_supplicant package.
+Group: Default
+
+%description license
+license components for the wpa_supplicant package.
+
+
 %prep
 %setup -q -n wpa_supplicant-2.6
 %patch1 -p1
@@ -85,37 +97,40 @@ data components for the wpa_supplicant package.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
+%patch20 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1516985745
-export CFLAGS="$CFLAGS -fstack-protector-strong "
-export FCFLAGS="$CFLAGS -fstack-protector-strong "
-export FFLAGS="$CFLAGS -fstack-protector-strong "
-export CXXFLAGS="$CXXFLAGS -fstack-protector-strong "
+export SOURCE_DATE_EPOCH=1539809924
+export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CXXFLAGS="$CXXFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
 pushd wpa_supplicant
 make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1516985745
+export SOURCE_DATE_EPOCH=1539809924
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/wpa_supplicant
+cp COPYING %{buildroot}/usr/share/package-licenses/wpa_supplicant/COPYING
 pushd wpa_supplicant
 %make_install
 popd
 mkdir -p %{buildroot}/usr/lib/systemd/system
 install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/wpa_supplicant.service
-## make_install_append content
+## install_append content
 chmod -x %{buildroot}/usr/lib/systemd/system/*
 mkdir -p %{buildroot}/usr/share/dbus-1/system-services/
 install -m 0644 wpa_supplicant/dbus/fi.w1.wpa_supplicant1.service %{buildroot}/usr/share/dbus-1/system-services/
 install -m 0644 wpa_supplicant/dbus/fi.epitest.hostap.WPASupplicant.service %{buildroot}/usr/share/dbus-1/system-services/
 mkdir -p %{buildroot}/usr/share/dbus-1/system.d/
 install -m 0644 wpa_supplicant/dbus/dbus-wpa_supplicant.conf %{buildroot}/usr/share/dbus-1/system.d/wpa_supplicant.conf
-## make_install_append end
+## install_append end
 
 %files
 %defattr(-,root,root,-)
@@ -138,3 +153,7 @@ install -m 0644 wpa_supplicant/dbus/dbus-wpa_supplicant.conf %{buildroot}/usr/sh
 /usr/share/dbus-1/system-services/fi.epitest.hostap.WPASupplicant.service
 /usr/share/dbus-1/system-services/fi.w1.wpa_supplicant1.service
 /usr/share/dbus-1/system.d/wpa_supplicant.conf
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/wpa_supplicant/COPYING
