@@ -6,11 +6,11 @@
 #
 Name     : wpa_supplicant
 Version  : 2.7
-Release  : 28
-URL      : http://w1.fi/releases/wpa_supplicant-2.7.tar.gz
-Source0  : http://w1.fi/releases/wpa_supplicant-2.7.tar.gz
+Release  : 31
+URL      : https://w1.fi/releases/wpa_supplicant-2.7.tar.gz
+Source0  : https://w1.fi/releases/wpa_supplicant-2.7.tar.gz
 Source1  : wpa_supplicant.service
-Source99 : http://w1.fi/releases/wpa_supplicant-2.7.tar.gz.asc
+Source99 : https://w1.fi/releases/wpa_supplicant-2.7.tar.gz.asc
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause
@@ -24,16 +24,14 @@ BuildRequires : dbus-dev
 BuildRequires : libnl-dev
 BuildRequires : openssl-dev
 Patch1: config.patch
-Patch2: CVE-2017-13077.nopatch
-Patch3: CVE-2017-13078.nopatch
-Patch4: CVE-2017-13079.nopatch
-Patch5: CVE-2017-13080.nopatch
-Patch6: CVE-2017-13081.nopatch
-Patch7: CVE-2017-13082.nopatch
-Patch8: CVE-2017-13084.nopatch
-Patch9: CVE-2017-13086.nopatch
-Patch10: CVE-2017-13087.nopatch
-Patch11: CVE-2017-13088.nopatch
+Patch2: CVE-2019-9494.patch
+Patch3: CVE-2019-9495.patch
+Patch4: CVE-2019-9496.patch
+Patch5: CVE-2019-9497.patch
+Patch6: CVE-2019-9498.patch
+Patch7: CVE-2019-9499.patch
+Patch8: 0001-EAP-pwd-server-Fix-reassembly-buffer-handling.patch
+Patch9: 0003-EAP-pwd-peer-Fix-reassembly-buffer-handling.patch
 
 %description
 wpa_supplicant and hostapd
@@ -80,13 +78,22 @@ services components for the wpa_supplicant package.
 %prep
 %setup -q -n wpa_supplicant-2.7
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
+%patch6 -p1
+%patch7 -p1
+%patch8 -p1
+%patch9 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1543817724
+export SOURCE_DATE_EPOCH=1555636633
+export LDFLAGS="${LDFLAGS} -fno-lto"
 export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
 export FCFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
 export FFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
@@ -95,8 +102,9 @@ pushd wpa_supplicant
 make  %{?_smp_mflags}
 popd
 
+
 %install
-export SOURCE_DATE_EPOCH=1543817724
+export SOURCE_DATE_EPOCH=1555636633
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/wpa_supplicant
 cp COPYING %{buildroot}/usr/share/package-licenses/wpa_supplicant/COPYING
