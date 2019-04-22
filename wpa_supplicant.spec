@@ -5,58 +5,40 @@
 # Source0 file verified with key 0x2B6EF432EFC895FA (j@w1.fi)
 #
 Name     : wpa_supplicant
-Version  : 2.7
-Release  : 31
-URL      : https://w1.fi/releases/wpa_supplicant-2.7.tar.gz
-Source0  : https://w1.fi/releases/wpa_supplicant-2.7.tar.gz
+Version  : 2.8
+Release  : 33
+URL      : https://w1.fi/releases/wpa_supplicant-2.8.tar.gz
+Source0  : https://w1.fi/releases/wpa_supplicant-2.8.tar.gz
 Source1  : wpa_supplicant.service
-Source99 : https://w1.fi/releases/wpa_supplicant-2.7.tar.gz.asc
+Source99 : https://w1.fi/releases/wpa_supplicant-2.8.tar.gz.asc
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause
 Requires: wpa_supplicant-bin = %{version}-%{release}
-Requires: wpa_supplicant-data = %{version}-%{release}
 Requires: wpa_supplicant-license = %{version}-%{release}
 Requires: wpa_supplicant-services = %{version}-%{release}
-Requires: linux-firmware-wifi
 BuildRequires : buildreq-qmake
 BuildRequires : dbus-dev
 BuildRequires : libnl-dev
 BuildRequires : openssl-dev
 Patch1: config.patch
-Patch2: CVE-2019-9494.patch
-Patch3: CVE-2019-9495.patch
-Patch4: CVE-2019-9496.patch
-Patch5: CVE-2019-9497.patch
-Patch6: CVE-2019-9498.patch
-Patch7: CVE-2019-9499.patch
-Patch8: 0001-EAP-pwd-server-Fix-reassembly-buffer-handling.patch
-Patch9: 0003-EAP-pwd-peer-Fix-reassembly-buffer-handling.patch
 
 %description
-wpa_supplicant and hostapd
---------------------------
-All Rights Reserved.
-These programs are licensed under the BSD license (the one with
-advertisement clause removed).
+Device Provisioning Protocol (DPP)
+==================================
+This document describes how the Device Provisioning Protocol (DPP)
+implementation in wpa_supplicant and hostapd can be configured and how
+the STA device and AP can be configured to connect each other using DPP
+Connector mechanism.
 
 %package bin
 Summary: bin components for the wpa_supplicant package.
 Group: Binaries
-Requires: wpa_supplicant-data = %{version}-%{release}
 Requires: wpa_supplicant-license = %{version}-%{release}
 Requires: wpa_supplicant-services = %{version}-%{release}
 
 %description bin
 bin components for the wpa_supplicant package.
-
-
-%package data
-Summary: data components for the wpa_supplicant package.
-Group: Data
-
-%description data
-data components for the wpa_supplicant package.
 
 
 %package license
@@ -76,35 +58,26 @@ services components for the wpa_supplicant package.
 
 
 %prep
-%setup -q -n wpa_supplicant-2.7
+%setup -q -n wpa_supplicant-2.8
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
-%patch9 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1555636633
-export LDFLAGS="${LDFLAGS} -fno-lto"
-export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FCFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
-export CXXFLAGS="$CXXFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
+export SOURCE_DATE_EPOCH=1555943921
+export CFLAGS="$CFLAGS -fcf-protection=full -fstack-protector-strong "
+export FCFLAGS="$CFLAGS -fcf-protection=full -fstack-protector-strong "
+export FFLAGS="$CFLAGS -fcf-protection=full -fstack-protector-strong "
+export CXXFLAGS="$CXXFLAGS -fcf-protection=full -fstack-protector-strong "
 pushd wpa_supplicant
 make  %{?_smp_mflags}
 popd
 
 
 %install
-export SOURCE_DATE_EPOCH=1555636633
+export SOURCE_DATE_EPOCH=1555943921
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/wpa_supplicant
 cp COPYING %{buildroot}/usr/share/package-licenses/wpa_supplicant/COPYING
@@ -115,11 +88,6 @@ mkdir -p %{buildroot}/usr/lib/systemd/system
 install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/wpa_supplicant.service
 ## install_append content
 chmod -x %{buildroot}/usr/lib/systemd/system/*
-mkdir -p %{buildroot}/usr/share/dbus-1/system-services/
-install -m 0644 wpa_supplicant/dbus/fi.w1.wpa_supplicant1.service %{buildroot}/usr/share/dbus-1/system-services/
-install -m 0644 wpa_supplicant/dbus/fi.epitest.hostap.WPASupplicant.service %{buildroot}/usr/share/dbus-1/system-services/
-mkdir -p %{buildroot}/usr/share/dbus-1/system.d/
-install -m 0644 wpa_supplicant/dbus/dbus-wpa_supplicant.conf %{buildroot}/usr/share/dbus-1/system.d/wpa_supplicant.conf
 ## install_append end
 
 %files
@@ -130,12 +98,6 @@ install -m 0644 wpa_supplicant/dbus/dbus-wpa_supplicant.conf %{buildroot}/usr/sh
 /usr/bin/wpa_cli
 /usr/bin/wpa_passphrase
 /usr/bin/wpa_supplicant
-
-%files data
-%defattr(-,root,root,-)
-/usr/share/dbus-1/system-services/fi.epitest.hostap.WPASupplicant.service
-/usr/share/dbus-1/system-services/fi.w1.wpa_supplicant1.service
-/usr/share/dbus-1/system.d/wpa_supplicant.conf
 
 %files license
 %defattr(0644,root,root,0755)

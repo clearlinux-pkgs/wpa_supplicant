@@ -1,9 +1,9 @@
 config.patch
-CVE-2019-9494.patch
-CVE-2019-9495.patch
-CVE-2019-9496.patch
-CVE-2019-9497.patch
-CVE-2019-9498.patch
-CVE-2019-9499.patch
-0001-EAP-pwd-server-Fix-reassembly-buffer-handling.patch
-0003-EAP-pwd-peer-Fix-reassembly-buffer-handling.patch
+#CVE-2019-9494.patch
+#CVE-2019-9495.patch
+#CVE-2019-9496.patch
+#CVE-2019-9497.patch
+#CVE-2019-9498.patch
+#CVE-2019-9499.patch
+#0001-EAP-pwd-server-Fix-reassembly-buffer-handling.patch
+#0003-EAP-pwd-peer-Fix-reassembly-buffer-handling.patch
