@@ -1,6 +1,6 @@
 chmod -x %{buildroot}/usr/lib/systemd/system/*
-#mkdir -p %{buildroot}/usr/share/dbus-1/system-services/
-#install -m 0644 wpa_supplicant/dbus/fi.w1.wpa_supplicant1.service %{buildroot}/usr/share/dbus-1/system-services/
-#install -m 0644 wpa_supplicant/dbus/fi.epitest.hostap.WPASupplicant.service %{buildroot}/usr/share/dbus-1/system-services/
-#mkdir -p %{buildroot}/usr/share/dbus-1/system.d/
-#install -m 0644 wpa_supplicant/dbus/dbus-wpa_supplicant.conf %{buildroot}/usr/share/dbus-1/system.d/wpa_supplicant.conf
+mkdir -p %{buildroot}/usr/share/dbus-1/system-services/
+install -m 0644 wpa_supplicant/dbus/fi.w1.wpa_supplicant1.service %{buildroot}/usr/share/dbus-1/system-services/
+install -m 0644 wpa_supplicant/dbus/fi.epitest.hostap.WPASupplicant.service %{buildroot}/usr/share/dbus-1/system-services/
+mkdir -p %{buildroot}/usr/share/dbus-1/system.d/
+install -m 0644 wpa_supplicant/dbus/dbus-wpa_supplicant.conf %{buildroot}/usr/share/dbus-1/system.d/wpa_supplicant.conf
