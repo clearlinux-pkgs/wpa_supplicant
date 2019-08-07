@@ -6,11 +6,11 @@
 #
 Name     : wpa_supplicant
 Version  : 2.8
-Release  : 34
+Release  : 35
 URL      : https://w1.fi/releases/wpa_supplicant-2.8.tar.gz
 Source0  : https://w1.fi/releases/wpa_supplicant-2.8.tar.gz
 Source1  : wpa_supplicant.service
-Source99 : https://w1.fi/releases/wpa_supplicant-2.8.tar.gz.asc
+Source2 : https://w1.fi/releases/wpa_supplicant-2.8.tar.gz.asc
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause
@@ -74,20 +74,20 @@ services components for the wpa_supplicant package.
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1556136688
-export LDFLAGS="${LDFLAGS} -fno-lto"
-export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FCFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
-export CXXFLAGS="$CXXFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1565193283
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CXXFLAGS="$CXXFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
 pushd wpa_supplicant
 make  %{?_smp_mflags}
 popd
 
 
 %install
-export SOURCE_DATE_EPOCH=1556136688
+export SOURCE_DATE_EPOCH=1565193283
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/wpa_supplicant
 cp COPYING %{buildroot}/usr/share/package-licenses/wpa_supplicant/COPYING
