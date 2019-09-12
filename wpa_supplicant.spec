@@ -6,7 +6,7 @@
 #
 Name     : wpa_supplicant
 Version  : 2.9
-Release  : 36
+Release  : 37
 URL      : https://w1.fi/releases/wpa_supplicant-2.9.tar.gz
 Source0  : https://w1.fi/releases/wpa_supplicant-2.9.tar.gz
 Source1  : wpa_supplicant.service
@@ -23,6 +23,7 @@ BuildRequires : dbus-dev
 BuildRequires : libnl-dev
 BuildRequires : openssl-dev
 Patch1: config.patch
+Patch2: CVE-2019-16275.patch
 
 %description
 wpa_supplicant and hostapd
@@ -69,13 +70,14 @@ services components for the wpa_supplicant package.
 %prep
 %setup -q -n wpa_supplicant-2.9
 %patch1 -p1
+%patch2 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1568321306
+export SOURCE_DATE_EPOCH=1568330747
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
 export FCFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
@@ -87,7 +89,7 @@ popd
 
 
 %install
-export SOURCE_DATE_EPOCH=1568321306
+export SOURCE_DATE_EPOCH=1568330747
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/wpa_supplicant
 cp COPYING %{buildroot}/usr/share/package-licenses/wpa_supplicant/COPYING
