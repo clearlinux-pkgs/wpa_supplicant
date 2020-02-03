@@ -6,11 +6,11 @@
 #
 Name     : wpa_supplicant
 Version  : 2.9
-Release  : 38
+Release  : 39
 URL      : https://w1.fi/releases/wpa_supplicant-2.9.tar.gz
 Source0  : https://w1.fi/releases/wpa_supplicant-2.9.tar.gz
 Source1  : wpa_supplicant.service
-Source2 : https://w1.fi/releases/wpa_supplicant-2.9.tar.gz.asc
+Source2  : https://w1.fi/releases/wpa_supplicant-2.9.tar.gz.asc
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause
@@ -22,7 +22,7 @@ BuildRequires : buildreq-qmake
 BuildRequires : dbus-dev
 BuildRequires : libnl-dev
 BuildRequires : openssl-dev
-Patch1: config.patch
+Patch1: 0001-Add-configuration-options-and-service-to-install.patch
 Patch2: CVE-2019-16275.patch
 
 %description
@@ -69,6 +69,7 @@ services components for the wpa_supplicant package.
 
 %prep
 %setup -q -n wpa_supplicant-2.9
+cd %{_builddir}/wpa_supplicant-2.9
 %patch1 -p1
 %patch2 -p1
 
@@ -77,7 +78,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1568330747
+export SOURCE_DATE_EPOCH=1580762076
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
 export FCFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
@@ -89,10 +90,10 @@ popd
 
 
 %install
-export SOURCE_DATE_EPOCH=1568330747
+export SOURCE_DATE_EPOCH=1580762076
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/wpa_supplicant
-cp COPYING %{buildroot}/usr/share/package-licenses/wpa_supplicant/COPYING
+cp %{_builddir}/wpa_supplicant-2.9/COPYING %{buildroot}/usr/share/package-licenses/wpa_supplicant/cf69b4e8c9678903f3a882015c307cdd642c1048
 pushd wpa_supplicant
 %make_install
 popd
@@ -122,7 +123,7 @@ install -m 0644 wpa_supplicant/dbus/dbus-wpa_supplicant.conf %{buildroot}/usr/sh
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/wpa_supplicant/COPYING
+/usr/share/package-licenses/wpa_supplicant/cf69b4e8c9678903f3a882015c307cdd642c1048
 
 %files services
 %defattr(-,root,root,-)

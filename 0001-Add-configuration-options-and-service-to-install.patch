@@ -1,8 +1,23 @@
-Index: wpa_supplicant-2.4/wpa_supplicant/.config
-===================================================================
+From 68498d20d264ccde639a4b60dd2d440f033f31d7 Mon Sep 17 00:00:00 2001
+From: William Douglas <william.douglas@intel.com>
+Date: Mon, 3 Feb 2020 12:12:28 -0800
+Subject: [PATCH] Add configuration options and service to install
+
+Configure wpa supplicant for Clear Linux. Also enables installing the
+systemd service as part of the install target to reduce build
+complexity at the cost of patch maintenance.
+---
+ wpa_supplicant/.config  | 499 ++++++++++++++++++++++++++++++++++++++++
+ wpa_supplicant/Makefile |   9 +-
+ 2 files changed, 505 insertions(+), 3 deletions(-)
+ create mode 100644 wpa_supplicant/.config
+
+diff --git a/wpa_supplicant/.config b/wpa_supplicant/.config
+new file mode 100644
+index 0000000..0db7c0a
 --- /dev/null
-+++ wpa_supplicant-2.4/wpa_supplicant/.config
-@@ -0,0 +1,497 @@
++++ b/wpa_supplicant/.config
+@@ -0,0 +1,499 @@
 +# Example wpa_supplicant build time configuration
 +#
 +# This file lists the configuration options that are used when building the
@@ -48,6 +63,8 @@ Index: wpa_supplicant-2.4/wpa_supplicant/.config
 +# Use libnl 3.2 libraries (if this is selected, CONFIG_LIBNL20 is ignored)
 +CONFIG_LIBNL32=y
 +
++# Simultaneous Authentication of Equals (SAE), WPA3-Personal
++CONFIG_SAE=y
 +
 +# Driver interface for FreeBSD net80211 layer (e.g., Atheros driver)
 +#CONFIG_DRIVER_BSD=y
@@ -286,7 +303,7 @@ Index: wpa_supplicant-2.4/wpa_supplicant/.config
 +
 +# IEEE 802.11w (management frame protection), also known as PMF
 +# Driver support is also needed for IEEE 802.11w.
-+#CONFIG_IEEE80211W=y
++CONFIG_IEEE80211W=y
 +
 +# Select TLS implementation
 +# openssl = OpenSSL (default)
@@ -364,7 +381,7 @@ Index: wpa_supplicant-2.4/wpa_supplicant/.config
 +#CONFIG_DYNAMIC_EAP_METHODS=y
 +
 +# IEEE Std 802.11r-2008 (Fast BSS Transition)
-+#CONFIG_IEEE80211R=y
++CONFIG_IEEE80211R=y
 +
 +# Add support for writing debug log to a file (/tmp/wpa_supplicant-log-#.txt)
 +#CONFIG_DEBUG_FILE=y
@@ -500,12 +517,12 @@ Index: wpa_supplicant-2.4/wpa_supplicant/.config
 +#
 +# External password backend for testing purposes (developer use)
 +#CONFIG_EXT_PASSWORD_TEST=y
-Index: wpa_supplicant-2.4/wpa_supplicant/Makefile
-===================================================================
---- wpa_supplicant-2.4.orig/wpa_supplicant/Makefile
-+++ wpa_supplicant-2.4/wpa_supplicant/Makefile
-@@ -6,9 +6,9 @@ ifndef CFLAGS
- CFLAGS = -MMD -O2 -Wall -g
+diff --git a/wpa_supplicant/Makefile b/wpa_supplicant/Makefile
+index f1384d5..d947e75 100644
+--- a/wpa_supplicant/Makefile
++++ b/wpa_supplicant/Makefile
+@@ -17,9 +17,9 @@ LIBS_p := $(LIBS)
+ endif
  endif
  
 -export LIBDIR ?= /usr/local/lib/
@@ -517,9 +534,7 @@ Index: wpa_supplicant-2.4/wpa_supplicant/Makefile
  PKG_CONFIG ?= pkg-config
  
  CFLAGS += $(EXTRA_CFLAGS)
---- wpa_supplicant-2.5/wpa_supplicant/Makefile~	2015-09-27 19:02:05.000000000 +0000
-+++ wpa_supplicant-2.5/wpa_supplicant/Makefile	2016-04-12 17:21:24.938435231 +0000
-@@ -69,6 +69,9 @@
+@@ -89,6 +89,9 @@ ifdef CONFIG_BUILD_WPA_CLIENT_SO
  	install -m 0644 -D libwpa_client.so $(DESTDIR)/$(LIBDIR)/libwpa_client.so
  	install -m 0644 -D ../src/common/wpa_ctrl.h $(DESTDIR)/$(INCDIR)/wpa_ctrl.h
  endif
@@ -529,3 +544,6 @@ Index: wpa_supplicant-2.4/wpa_supplicant/Makefile
  
  ifdef CONFIG_FIPS
  CONFIG_NO_RANDOM_POOL=
+-- 
+2.25.0
+
