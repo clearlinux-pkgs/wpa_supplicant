@@ -6,7 +6,7 @@
 #
 Name     : wpa_supplicant
 Version  : 2.9
-Release  : 39
+Release  : 40
 URL      : https://w1.fi/releases/wpa_supplicant-2.9.tar.gz
 Source0  : https://w1.fi/releases/wpa_supplicant-2.9.tar.gz
 Source1  : wpa_supplicant.service
@@ -80,10 +80,10 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
 export SOURCE_DATE_EPOCH=1580762076
 export GCC_IGNORE_WERROR=1
-export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FCFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
-export CXXFLAGS="$CXXFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -fzero-call-used-regs=used "
+export FCFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -fzero-call-used-regs=used "
+export FFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -fzero-call-used-regs=used "
+export CXXFLAGS="$CXXFLAGS -fno-lto -fstack-protector-strong -fzero-call-used-regs=used "
 pushd wpa_supplicant
 make  %{?_smp_mflags}
 popd
