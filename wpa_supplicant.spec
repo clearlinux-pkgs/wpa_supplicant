@@ -6,7 +6,7 @@
 #
 Name     : wpa_supplicant
 Version  : 2.9
-Release  : 40
+Release  : 41
 URL      : https://w1.fi/releases/wpa_supplicant-2.9.tar.gz
 Source0  : https://w1.fi/releases/wpa_supplicant-2.9.tar.gz
 Source1  : wpa_supplicant.service
