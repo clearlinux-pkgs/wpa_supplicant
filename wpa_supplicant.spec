@@ -5,12 +5,12 @@
 # Source0 file verified with key 0x2B6EF432EFC895FA (j@w1.fi)
 #
 Name     : wpa_supplicant
-Version  : 2.9
-Release  : 41
-URL      : https://w1.fi/releases/wpa_supplicant-2.9.tar.gz
-Source0  : https://w1.fi/releases/wpa_supplicant-2.9.tar.gz
+Version  : 2.10
+Release  : 42
+URL      : https://w1.fi/releases/wpa_supplicant-2.10.tar.gz
+Source0  : https://w1.fi/releases/wpa_supplicant-2.10.tar.gz
 Source1  : wpa_supplicant.service
-Source2  : https://w1.fi/releases/wpa_supplicant-2.9.tar.gz.asc
+Source2  : https://w1.fi/releases/wpa_supplicant-2.10.tar.gz.asc
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause
@@ -22,8 +22,10 @@ BuildRequires : buildreq-qmake
 BuildRequires : dbus-dev
 BuildRequires : libnl-dev
 BuildRequires : openssl-dev
+# Suppress stripping binaries
+%define __strip /bin/true
+%define debug_package %{nil}
 Patch1: 0001-Add-configuration-options-and-service-to-install.patch
-Patch2: CVE-2019-16275.patch
 
 %description
 wpa_supplicant and hostapd
@@ -68,32 +70,31 @@ services components for the wpa_supplicant package.
 
 
 %prep
-%setup -q -n wpa_supplicant-2.9
-cd %{_builddir}/wpa_supplicant-2.9
+%setup -q -n wpa_supplicant-2.10
+cd %{_builddir}/wpa_supplicant-2.10
 %patch1 -p1
-%patch2 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1580762076
+export SOURCE_DATE_EPOCH=1676049960
 export GCC_IGNORE_WERROR=1
-export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -fzero-call-used-regs=used "
-export FCFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -fzero-call-used-regs=used "
-export FFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -fzero-call-used-regs=used "
-export CXXFLAGS="$CXXFLAGS -fno-lto -fstack-protector-strong -fzero-call-used-regs=used "
+export CFLAGS="$CFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -fstack-protector-strong -fzero-call-used-regs=used -g1 -gno-column-info -gno-variable-location-views -gz "
+export FCFLAGS="$FFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -fstack-protector-strong -fzero-call-used-regs=used -g1 -gno-column-info -gno-variable-location-views -gz "
+export FFLAGS="$FFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -fstack-protector-strong -fzero-call-used-regs=used -g1 -gno-column-info -gno-variable-location-views -gz "
+export CXXFLAGS="$CXXFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -fstack-protector-strong -fzero-call-used-regs=used -g1 -gno-column-info -gno-variable-location-views -gz "
 pushd wpa_supplicant
 make  %{?_smp_mflags}
 popd
 
 
 %install
-export SOURCE_DATE_EPOCH=1580762076
+export SOURCE_DATE_EPOCH=1676049960
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/wpa_supplicant
-cp %{_builddir}/wpa_supplicant-2.9/COPYING %{buildroot}/usr/share/package-licenses/wpa_supplicant/cf69b4e8c9678903f3a882015c307cdd642c1048
+cp %{_builddir}/wpa_supplicant-%{version}/COPYING %{buildroot}/usr/share/package-licenses/wpa_supplicant/704ec0c10de3548c062e643e012f0ee4ead22bd5 || :
 pushd wpa_supplicant
 %make_install
 popd
@@ -123,7 +124,7 @@ install -m 0644 wpa_supplicant/dbus/dbus-wpa_supplicant.conf %{buildroot}/usr/sh
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/wpa_supplicant/cf69b4e8c9678903f3a882015c307cdd642c1048
+/usr/share/package-licenses/wpa_supplicant/704ec0c10de3548c062e643e012f0ee4ead22bd5
 
 %files services
 %defattr(-,root,root,-)

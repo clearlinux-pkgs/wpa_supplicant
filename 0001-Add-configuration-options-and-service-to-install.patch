@@ -1,4 +1,4 @@
-From 68498d20d264ccde639a4b60dd2d440f033f31d7 Mon Sep 17 00:00:00 2001
+From f28e297e0f09f5f7c0fe11d8cc514b1cd1b410f0 Mon Sep 17 00:00:00 2001
 From: William Douglas <william.douglas@intel.com>
 Date: Mon, 3 Feb 2020 12:12:28 -0800
 Subject: [PATCH] Add configuration options and service to install
@@ -14,7 +14,7 @@ complexity at the cost of patch maintenance.
 
 diff --git a/wpa_supplicant/.config b/wpa_supplicant/.config
 new file mode 100644
-index 0000000..0db7c0a
+index 000000000000..0db7c0abadb2
 --- /dev/null
 +++ b/wpa_supplicant/.config
 @@ -0,0 +1,499 @@
@@ -518,26 +518,26 @@ index 0000000..0db7c0a
 +# External password backend for testing purposes (developer use)
 +#CONFIG_EXT_PASSWORD_TEST=y
 diff --git a/wpa_supplicant/Makefile b/wpa_supplicant/Makefile
-index f1384d5..d947e75 100644
+index cb66defac7c8..18041f931450 100644
 --- a/wpa_supplicant/Makefile
 +++ b/wpa_supplicant/Makefile
-@@ -17,9 +17,9 @@ LIBS_p := $(LIBS)
+@@ -30,9 +30,9 @@ LIBS_p := $(LIBS)
  endif
  endif
  
--export LIBDIR ?= /usr/local/lib/
--export INCDIR ?= /usr/local/include/
--export BINDIR ?= /usr/local/sbin/
-+export LIBDIR ?= /usr/lib64/
-+export INCDIR ?= /usr/include/
-+export BINDIR ?= /usr/bin/
+-export LIBDIR ?= /usr/local/lib
+-export INCDIR ?= /usr/local/include
+-export BINDIR ?= /usr/local/sbin
++export LIBDIR ?= /usr/lib64
++export INCDIR ?= /usr/include
++export BINDIR ?= /usr/bin
  PKG_CONFIG ?= pkg-config
  
  CFLAGS += $(EXTRA_CFLAGS)
-@@ -89,6 +89,9 @@ ifdef CONFIG_BUILD_WPA_CLIENT_SO
- 	install -m 0644 -D libwpa_client.so $(DESTDIR)/$(LIBDIR)/libwpa_client.so
- 	install -m 0644 -D ../src/common/wpa_ctrl.h $(DESTDIR)/$(INCDIR)/wpa_ctrl.h
- endif
+@@ -76,6 +76,9 @@ endif
+ 		install -d $(DESTDIR)$(LIBDIR)/wpa_supplicant && \
+ 		cp *.so $(DESTDIR)$(LIBDIR)/wpa_supplicant \
+ 	; fi
 +	install -d $(DESTDIR)/usr/lib/systemd/system
 +	install -t $(DESTDIR)/usr/lib/systemd/system systemd/*.service
 +
@@ -545,5 +545,5 @@ index f1384d5..d947e75 100644
  ifdef CONFIG_FIPS
  CONFIG_NO_RANDOM_POOL=
 -- 
-2.25.0
+2.39.1
 
